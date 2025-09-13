@@ -2,13 +2,19 @@ import mysql.connector
 import tkinter as tk
 from tkinter import messagebox
 
+DB_HOST = "localhost"
+DB_USER = "root"
+DB_PASSWORD = "YOUR_PASSWORD_HERE"
+DB_NAME = "YOUR_DATABASE_HERE"
+
 conn = mysql.connector.connect(
-    host="localhost",
-    user="root",
-    password="marcoparco77D",  
-    database="userdb"
+    host=DB_HOST,
+    user=DB_USER,
+    password=DB_PASSWORD,
+    database=DB_NAME
 )
 cursor = conn.cursor()
+
 cursor.execute("""
 CREATE TABLE IF NOT EXISTS inputs (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -57,6 +63,7 @@ def load_rows():
 
     cursor.execute("SELECT id, input1, input2, input3, input4, created_at FROM inputs ORDER BY id")
     rows = cursor.fetchall()
+    
     for i, row in enumerate(rows, start=2):
         row_id = row[0]
         for j, value in enumerate(row[1:5]):
@@ -77,8 +84,8 @@ for i in range(4):
 tk.Button(app, text="Save Row", command=save_row, bg="lightgreen").grid(row=1, column=4, padx=5)
 
 load_rows()
-
 app.mainloop()
 
 cursor.close()
 conn.close()
+
